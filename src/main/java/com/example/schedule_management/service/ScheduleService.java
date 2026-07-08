@@ -2,6 +2,7 @@ package com.example.schedule_management.service;
 
 import com.example.schedule_management.dtd.ScheduleRequest;
 import com.example.schedule_management.dtd.ScheduleResponse;
+import com.example.schedule_management.dtd.UpdateRequest;
 import com.example.schedule_management.entity.ScheduleEntity;
 import com.example.schedule_management.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -60,6 +61,24 @@ public class ScheduleService {
         );
 
         return new ScheduleResponse(
+                scheduleEntity.getId(),
+                scheduleEntity.getName(),
+                scheduleEntity.getTitle(),
+                scheduleEntity.getText(),
+                scheduleEntity.getCreatedAt(),
+                scheduleEntity.getUpdatedAt()
+        );
+    }
+    @Transactional
+    public ScheduleResponse updateSchedule(Long id, UpdateRequest updateRequest) {
+        ScheduleEntity scheduleEntity=scheduleRepository.findById(id).orElseThrow(
+                ()-> new IllegalStateException("없는 ID입니다")
+        );
+        scheduleEntity.update(
+                updateRequest.getTitle(),
+                updateRequest.getText()
+        );
+       return new ScheduleResponse(
                 scheduleEntity.getId(),
                 scheduleEntity.getName(),
                 scheduleEntity.getTitle(),

@@ -29,9 +29,7 @@ public class ScheduleEntity extends HourEntity{
 
     }
 
-    public void update(Long id, String name, String title, String text) {
-        this.id = id;
-        this.name = name;
+    public void update(String title, String text) {
         this.title = title;
         this.text = text;
 
