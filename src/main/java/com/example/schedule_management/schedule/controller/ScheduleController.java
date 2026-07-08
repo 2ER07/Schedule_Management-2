@@ -15,12 +15,12 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/scheduleManagement")
 public class ScheduleController {
-    public final ScheduleService scheduleService;
+    private final ScheduleService scheduleService;
 
     //생성
     @PostMapping
     public ResponseEntity<ScheduleResponse> creationSchedule(@RequestBody ScheduleRequest scheduleRequest){
-        ScheduleResponse saved = scheduleService.creation(scheduleRequest);
+        ScheduleResponse saved = scheduleService.create(scheduleRequest);
        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 

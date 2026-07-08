@@ -10,15 +10,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.IllformedLocaleException;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ScheduleService {
-    public final ScheduleRepository scheduleRepository;
+    private final ScheduleRepository scheduleRepository;
 
-    public ScheduleResponse creation(ScheduleRequest scheduleRequest) {
+    @Transactional
+    public ScheduleResponse create(ScheduleRequest scheduleRequest) {
         ScheduleEntity schedule=new ScheduleEntity(
                 scheduleRequest.getName(),
                 scheduleRequest.getTitle(),
@@ -55,7 +55,7 @@ public class ScheduleService {
     @Transactional
     public ScheduleResponse findOne(Long id) {
         ScheduleEntity scheduleEntity=scheduleRepository.findById(id).orElseThrow(
-                ()-> new IllegalStateException("없는 ID입니다")
+                ()-> new IllegalArgumentException("없는 ID입니다")
         );
 
         return new ScheduleResponse(
@@ -70,7 +70,7 @@ public class ScheduleService {
     @Transactional
     public ScheduleResponse updateSchedule(Long id, UpdateRequest updateRequest) {
         ScheduleEntity scheduleEntity=scheduleRepository.findById(id).orElseThrow(
-                ()-> new IllegalStateException("없는 ID입니다")
+                ()-> new IllegalArgumentException("없는 ID입니다")
         );
         scheduleEntity.update(
                 updateRequest.getTitle(),
@@ -90,7 +90,7 @@ public class ScheduleService {
         boolean existence = scheduleRepository.existsById(id);
 
         if (!existence){
-            throw new IllformedLocaleException("없는 id 입니다");
+            throw new IllegalArgumentException("없는 id 입니다");
         }
 
         scheduleRepository.deleteById(id);
