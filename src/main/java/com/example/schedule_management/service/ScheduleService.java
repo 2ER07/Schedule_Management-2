@@ -6,14 +6,12 @@ import com.example.schedule_management.dtd.UpdateRequest;
 import com.example.schedule_management.entity.ScheduleEntity;
 import com.example.schedule_management.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.apache.bcel.generic.RET;
-import org.springframework.data.repository.RepositoryDefinition;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.IllformedLocaleException;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 @RequiredArgsConstructor
@@ -86,5 +84,15 @@ public class ScheduleService {
                 scheduleEntity.getCreatedAt(),
                 scheduleEntity.getUpdatedAt()
         );
+    }
+    @Transactional
+    public void delete(Long id) {
+        boolean existence = scheduleRepository.existsById(id);
+
+        if (!existence){
+            throw new IllformedLocaleException("없는 id 입니다");
+        }
+
+        scheduleRepository.deleteById(id);
     }
 }

@@ -5,7 +5,6 @@ import com.example.schedule_management.dtd.ScheduleResponse;
 import com.example.schedule_management.dtd.UpdateRequest;
 import com.example.schedule_management.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.sql.Update;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,5 +42,12 @@ public class ScheduleController {
     public ResponseEntity<ScheduleResponse> updateSchedule(@PathVariable Long id, @RequestBody UpdateRequest updateRequest){
         ScheduleResponse scheduleResponse = scheduleService.updateSchedule(id, updateRequest);
         return ResponseEntity.ok(scheduleResponse);
+    }
+
+    //삭제
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
+        scheduleService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
