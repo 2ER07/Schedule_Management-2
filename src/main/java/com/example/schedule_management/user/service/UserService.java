@@ -1,6 +1,7 @@
 package com.example.schedule_management.user.service;
 
 import com.example.schedule_management.schedule.dtd.ScheduleResponse;
+import com.example.schedule_management.user.dtd.UserCrystalRequest;
 import com.example.schedule_management.user.dtd.UserRequest;
 import com.example.schedule_management.user.dtd.UserResponse;
 import com.example.schedule_management.user.entity.UserEntity;
@@ -66,5 +67,22 @@ public class UserService {
                 userEntity.getUpdatedAt()
         );
         return userResponse;
+    }
+    @Transactional
+    public UserResponse crystalUser(Long id, UserCrystalRequest userCrystalRequest) {
+        UserEntity userEntity = userRepository.findById(id).orElseThrow(
+                ()->new IllegalArgumentException("없는 ID입니다")
+        );
+        userEntity.cryestal(
+                userCrystalRequest.getUsername()
+        );
+
+       return new UserResponse(
+                userEntity.getId(),
+                userEntity.getUserName(),
+                userEntity.getUserEmail(),
+                userEntity.getCreatedAt(),
+                userEntity.getUpdatedAt()
+       );
     }
 }

@@ -1,11 +1,9 @@
 package com.example.schedule_management.user.controller;
 
-import com.example.schedule_management.schedule.dtd.ScheduleRequest;
-import com.example.schedule_management.schedule.dtd.ScheduleResponse;
+import com.example.schedule_management.user.dtd.UserCrystalRequest;
 import com.example.schedule_management.user.dtd.UserRequest;
 import com.example.schedule_management.user.dtd.UserResponse;
 import com.example.schedule_management.user.service.UserService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +36,13 @@ public class UserController {
     public ResponseEntity<UserResponse> findOneUser(@PathVariable Long id){
         UserResponse oneUser = userService.findOneUser(id);
         return ResponseEntity.ok(oneUser);
+    }
+
+    //수정
+    @PutMapping("/{id}")
+    public ResponseEntity<UserResponse> crystalUser(@PathVariable Long id, @RequestBody UserCrystalRequest userCrystalRequest){
+        UserResponse userCrystal = userService.crystalUser(id, userCrystalRequest);
+        return ResponseEntity.ok(userCrystal);
     }
 
 
