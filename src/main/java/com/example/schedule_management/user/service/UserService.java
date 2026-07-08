@@ -9,6 +9,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 
 @Service
 @RequiredArgsConstructor
@@ -32,5 +36,35 @@ public class UserService {
         return userResponse;
 
 
+    }
+    @Transactional(readOnly = true)
+    public List<UserResponse> findAllUser() {
+        List<UserResponse> findAllUserList = new ArrayList<>();
+        List<UserEntity> userEntityList=userRepository.findAll();
+        for (UserEntity userEntity : userEntityList){
+            UserResponse userResponse = new UserResponse(
+                    userEntity.getId(),
+                    userEntity.getUserName(),
+                    userEntity.getUserEmail(),
+                    userEntity.getCreatedAt(),
+                    userEntity.getUpdatedAt()
+            );
+            findAllUserList.add(userResponse);
+        }
+        return findAllUserList;
+    }
+    @Transactional(readOnly = true)
+    public UserResponse findOneUser(Long id) {
+        UserEntity userEntity = userRepository.findById(id).orElseThrow(
+                ()->new IllegalArgumentException("없는 ID입니다")
+        );
+        UserResponse userResponse=new UserResponse(
+                userEntity.getId(),
+                userEntity.getUserName(),
+                userEntity.getUserEmail(),
+                userEntity.getCreatedAt(),
+                userEntity.getUpdatedAt()
+        );
+        return userResponse;
     }
 }

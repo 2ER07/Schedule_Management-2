@@ -5,13 +5,13 @@ import com.example.schedule_management.schedule.dtd.ScheduleResponse;
 import com.example.schedule_management.user.dtd.UserRequest;
 import com.example.schedule_management.user.dtd.UserResponse;
 import com.example.schedule_management.user.service.UserService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -25,6 +25,19 @@ public class UserController {
     public ResponseEntity<UserResponse> createUser(@RequestBody UserRequest userRequest){
         UserResponse saved = userService.createUser(userRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+    }
+    //전체 조회
+    @GetMapping
+    public ResponseEntity<List<UserResponse>> findAllUser(){
+        List<UserResponse> allUser = userService.findAllUser();
+        return ResponseEntity.ok(allUser);
+    }
+    
+    //단일 조회
+    @GetMapping("/{id}")
+    public ResponseEntity<UserResponse> findOneUser(@PathVariable Long id){
+        UserResponse oneUser = userService.findOneUser(id);
+        return ResponseEntity.ok(oneUser);
     }
 
 
