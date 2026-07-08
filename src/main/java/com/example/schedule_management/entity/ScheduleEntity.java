@@ -20,21 +20,20 @@ public class ScheduleEntity extends HourEntity{
     private String title;
     @Column(nullable = false,length = 1000)
     private String text;
-    @Column(nullable = false, length = 30)
-    private String password;
 
-    public ScheduleEntity(String name, String title, String text, String password) {
+
+    public ScheduleEntity(String name, String title, String text) {
         this.name = name;
         this.title = title;
         this.text = text;
-        this.password = password;
+
     }
 
-    public void update(Long id, String name, String title, String text, String password) {
+    public void update(Long id, String name, String title, String text) {
         this.id = id;
         this.name = name;
         this.title = title;
         this.text = text;
-        this.password = password;
+
     }
 }
