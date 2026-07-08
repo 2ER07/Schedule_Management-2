@@ -1,10 +1,10 @@
-package com.example.schedule_management.service;
+package com.example.schedule_management.schedule.service;
 
-import com.example.schedule_management.dtd.ScheduleRequest;
-import com.example.schedule_management.dtd.ScheduleResponse;
-import com.example.schedule_management.dtd.UpdateRequest;
-import com.example.schedule_management.entity.ScheduleEntity;
-import com.example.schedule_management.repository.ScheduleRepository;
+import com.example.schedule_management.schedule.dtd.ScheduleRequest;
+import com.example.schedule_management.schedule.dtd.ScheduleResponse;
+import com.example.schedule_management.schedule.dtd.UpdateRequest;
+import com.example.schedule_management.schedule.entity.ScheduleEntity;
+import com.example.schedule_management.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

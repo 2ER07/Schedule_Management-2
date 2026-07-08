@@ -1,16 +1,15 @@
-package com.example.schedule_management.entity;
+package com.example.schedule_management.schedule.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 @Entity
 @Getter
 @Table(name="schedules")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ScheduleEntity extends HourEntity{
+public class ScheduleEntity extends HourEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
