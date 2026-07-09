@@ -4,6 +4,7 @@ import com.example.schedule_management.schedule.dtd.ScheduleRequest;
 import com.example.schedule_management.schedule.dtd.ScheduleResponse;
 import com.example.schedule_management.schedule.dtd.UpdateRequest;
 import com.example.schedule_management.schedule.service.ScheduleService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,12 @@ public class ScheduleController {
 
     //생성
     @PostMapping
-    public ResponseEntity<ScheduleResponse> creationSchedule(@RequestBody ScheduleRequest scheduleRequest){
-        ScheduleResponse saved = scheduleService.create(scheduleRequest);
+    public ResponseEntity<ScheduleResponse> creationSchedule(@RequestBody ScheduleRequest scheduleRequest, HttpSession session){
+        Long userID=(Long) session.getAttribute("loginUserId");
+        if (userID ==null){
+            throw new IllegalArgumentException("로그인이 필요합니다");
+        }
+        ScheduleResponse saved = scheduleService.create(scheduleRequest,userID);
        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 

@@ -20,7 +20,6 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    //로그인
     @PostMapping("/login")
     public ResponseEntity<UserResponse> login(@RequestBody LoginRequest loginRequest){
         UserResponse response = userService.login(loginRequest);
