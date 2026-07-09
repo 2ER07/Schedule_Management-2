@@ -85,4 +85,12 @@ public class UserService {
                 userEntity.getUpdatedAt()
        );
     }
+
+    public void deletm(Long id) {
+        boolean existence = userRepository.existsById(id);
+        if (!existence){
+            throw new IllegalArgumentException("없는 id이다");
+        }
+        userRepository.deleteById(id);
+    }
 }

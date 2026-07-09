@@ -5,6 +5,8 @@ import com.example.schedule_management.schedule.dtd.ScheduleResponse;
 import com.example.schedule_management.schedule.dtd.UpdateRequest;
 import com.example.schedule_management.schedule.entity.ScheduleEntity;
 import com.example.schedule_management.schedule.repository.ScheduleRepository;
+import com.example.schedule_management.user.entity.UserEntity;
+import com.example.schedule_management.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,18 +18,22 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public ScheduleResponse create(ScheduleRequest scheduleRequest) {
+        UserEntity user = userRepository.findById(scheduleRequest.getUserId())
+                .orElseThrow(() -> new IllegalArgumentException("없는 사용자입니다"));
+
         ScheduleEntity schedule=new ScheduleEntity(
-                scheduleRequest.getName(),
+                user,
                 scheduleRequest.getTitle(),
                 scheduleRequest.getText()
         );
         ScheduleEntity saveScheduleEntity = scheduleRepository.save(schedule);
         return new ScheduleResponse(
                 saveScheduleEntity.getId(),
-                saveScheduleEntity.getName(),
+                saveScheduleEntity.getUser().getId(),
                 saveScheduleEntity.getTitle(),
                 saveScheduleEntity.getText(),
                 saveScheduleEntity.getCreatedAt(),
@@ -41,7 +47,7 @@ public class ScheduleService {
         for (ScheduleEntity scheduleEntity : scheduleEntitiesList){
             ScheduleResponse scheduleRequests= new ScheduleResponse(
                     scheduleEntity.getId(),
-                    scheduleEntity.getName(),
+                    scheduleEntity.getUser().getId(),
                     scheduleEntity.getTitle(),
                     scheduleEntity.getText(),
                     scheduleEntity.getCreatedAt(),
@@ -60,7 +66,7 @@ public class ScheduleService {
 
         return new ScheduleResponse(
                 scheduleEntity.getId(),
-                scheduleEntity.getName(),
+                scheduleEntity.getUser().getId(),
                 scheduleEntity.getTitle(),
                 scheduleEntity.getText(),
                 scheduleEntity.getCreatedAt(),
@@ -78,7 +84,7 @@ public class ScheduleService {
         );
        return new ScheduleResponse(
                 scheduleEntity.getId(),
-                scheduleEntity.getName(),
+                scheduleEntity.getUser().getId(),
                 scheduleEntity.getTitle(),
                 scheduleEntity.getText(),
                 scheduleEntity.getCreatedAt(),

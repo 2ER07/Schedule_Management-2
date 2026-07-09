@@ -45,5 +45,12 @@ public class UserController {
         return ResponseEntity.ok(userCrystal);
     }
 
+    //삭제
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletem(@PathVariable Long id){
+        userService.deletm(id);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }
