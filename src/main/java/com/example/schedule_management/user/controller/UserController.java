@@ -1,5 +1,6 @@
 package com.example.schedule_management.user.controller;
 
+import com.example.schedule_management.user.dtd.LoginRequest;
 import com.example.schedule_management.user.dtd.UserCrystalRequest;
 import com.example.schedule_management.user.dtd.UserRequest;
 import com.example.schedule_management.user.dtd.UserResponse;
@@ -18,6 +19,13 @@ import java.util.List;
 @RequestMapping("/user")
 public class UserController {
     private final UserService userService;
+
+    //로그인
+    @PostMapping("/login")
+    public ResponseEntity<UserResponse> login(@RequestBody LoginRequest loginRequest){
+        UserResponse response = userService.login(loginRequest);
+       return ResponseEntity.ok(response);
+    }
 
     //생성
     @PostMapping

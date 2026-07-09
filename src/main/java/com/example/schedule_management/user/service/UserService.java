@@ -1,6 +1,7 @@
 package com.example.schedule_management.user.service;
 
 import com.example.schedule_management.schedule.dtd.ScheduleResponse;
+import com.example.schedule_management.user.dtd.LoginRequest;
 import com.example.schedule_management.user.dtd.UserCrystalRequest;
 import com.example.schedule_management.user.dtd.UserRequest;
 import com.example.schedule_management.user.dtd.UserResponse;
@@ -19,16 +20,38 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+
+    @Transactional(readOnly = true)
+    public UserResponse login(LoginRequest loginRequest) {
+        UserEntity userEntity = userRepository.findByUserEmail(
+                        loginRequest.getUserEmail()
+                )
+                .orElseThrow(
+                        () -> new IllegalArgumentException("없는 이메일 입니다")
+                );
+        if (!userEntity.getPassword().equals(loginRequest.getPassword())){
+            throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
+        }
+       return new UserResponse(
+                userEntity.getId(),
+                userEntity.getUserName(),
+                userEntity.getUserEmail(),
+                userEntity.getCreatedAt(),
+                userEntity.getUpdatedAt()
+        );
+
+    }
+
     @Transactional
     public UserResponse createUser(UserRequest userRequest) {
-        UserEntity user=new UserEntity(
+        UserEntity user = new UserEntity(
                 userRequest.getPassword(),
                 userRequest.getUsername(),
                 userRequest.getUserEmail()
 
         );
-        UserEntity savedEntity= userRepository.save(user);
-        UserResponse userResponse=new UserResponse(
+        UserEntity savedEntity = userRepository.save(user);
+        UserResponse userResponse = new UserResponse(
                 savedEntity.getId(),
                 savedEntity.getUserName(),
                 savedEntity.getUserEmail(),
@@ -40,11 +63,12 @@ public class UserService {
 
 
     }
+
     @Transactional(readOnly = true)
     public List<UserResponse> findAllUser() {
         List<UserResponse> findAllUserList = new ArrayList<>();
-        List<UserEntity> userEntityList=userRepository.findAll();
-        for (UserEntity userEntity : userEntityList){
+        List<UserEntity> userEntityList = userRepository.findAll();
+        for (UserEntity userEntity : userEntityList) {
             UserResponse userResponse = new UserResponse(
                     userEntity.getId(),
                     userEntity.getUserName(),
@@ -56,12 +80,13 @@ public class UserService {
         }
         return findAllUserList;
     }
+
     @Transactional(readOnly = true)
     public UserResponse findOneUser(Long id) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(
-                ()->new IllegalArgumentException("없는 ID입니다")
+                () -> new IllegalArgumentException("없는 ID입니다")
         );
-        UserResponse userResponse=new UserResponse(
+        UserResponse userResponse = new UserResponse(
                 userEntity.getId(),
                 userEntity.getUserName(),
                 userEntity.getUserEmail(),
@@ -70,27 +95,28 @@ public class UserService {
         );
         return userResponse;
     }
+
     @Transactional
     public UserResponse crystalUser(Long id, UserCrystalRequest userCrystalRequest) {
         UserEntity userEntity = userRepository.findById(id).orElseThrow(
-                ()->new IllegalArgumentException("없는 ID입니다")
+                () -> new IllegalArgumentException("없는 ID입니다")
         );
         userEntity.cryestal(
                 userCrystalRequest.getUsername()
         );
 
-       return new UserResponse(
+        return new UserResponse(
                 userEntity.getId(),
                 userEntity.getUserName(),
                 userEntity.getUserEmail(),
                 userEntity.getCreatedAt(),
                 userEntity.getUpdatedAt()
-       );
+        );
     }
 
     public void deletm(Long id) {
         boolean existence = userRepository.existsById(id);
-        if (!existence){
+        if (!existence) {
             throw new IllegalArgumentException("없는 id이다");
         }
         userRepository.deleteById(id);
