@@ -22,8 +22,10 @@ public class UserService {
     @Transactional
     public UserResponse createUser(UserRequest userRequest) {
         UserEntity user=new UserEntity(
+                userRequest.getPassword(),
                 userRequest.getUsername(),
                 userRequest.getUserEmail()
+
         );
         UserEntity savedEntity= userRepository.save(user);
         UserResponse userResponse=new UserResponse(

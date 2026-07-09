@@ -13,12 +13,15 @@ public class UserEntity extends HourEntity{
     @Id
     @GeneratedValue(strategy =GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
+    private String password;
     @Column(nullable = false,length = 10)
     private String userName;
     @Column(nullable = false,updatable = false,unique = true)
     private String userEmail;
 
-    public UserEntity(String userName, String userEmail) {
+    public UserEntity(String password, String userName, String userEmail) {
+        this.password = password;
         this.userName = userName;
         this.userEmail = userEmail;
     }
